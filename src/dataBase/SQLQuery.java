@@ -31,10 +31,18 @@ public class SQLQuery {
 		
 		StringBuilder sb = new StringBuilder();
 		
-		sb.append("<html>"
-				+ "<body>"
-				+ "<table>"
-				+ "<tr>");
+		sb.append("<html>" +
+				  "<head>" +
+				  "<style>" +
+				  "table {" +
+				  "font-family: arial, sans-serif;" +
+				  "border-collapse: collapse;" +
+				  "width: 100%;" +
+				  "}" +
+				  "td, th { border: 1px solid #dddddd; text-align: left; padding: 8px; }" +
+				  "tr:nth-child(even) { background-color: #dddddd; } </style>" +
+				  "</head>"+
+				  "<body><table><tr>");
 		
 		while (iter.hasNext()){
 			String key = iter.next();
@@ -59,8 +67,6 @@ public class SQLQuery {
 		catch (FileNotFoundException e){
 			e.printStackTrace();
 		}
-		
-		
 	}
 	
 	public static void generateHTML(StringBuilder text) throws FileNotFoundException{
