@@ -10,7 +10,7 @@ import java.util.*;
 
 public class DBUtility {
 	
-	public static int insertRecord(String sql){
+	public static int insert(String sql, String user, String pw){
 		
 		Connection con = null;
 		Statement stmt = null;
@@ -19,7 +19,7 @@ public class DBUtility {
 		try{
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			//con = DriverManager.getConnection("jdbc:oracle:thin:sys as sysdba/oracle@localhost:1521:orcl");
-			con = DriverManager.getConnection("jdbc:oracle:thin:ora1/ora1@localhost:1521:orcl");
+			con = DriverManager.getConnection("jdbc:oracle:thin:" + user + "/" + pw + "@localhost:1521:orcl");
 			stmt = con.createStatement();
 			numRecords = stmt.executeUpdate(sql);
 			
@@ -41,7 +41,7 @@ public class DBUtility {
 		return 0;	
 	}
 	
-	public static int updateRecord(String sql){
+	public static int update(String sql, String user, String pw){
 		
 		Connection con = null;
 		Statement stmt = null;
@@ -50,7 +50,7 @@ public class DBUtility {
 		try{
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			//con = DriverManager.getConnection("jdbc:oracle:thin:sys as sysdba/oracle@localhost:1521:orcl");
-			con = DriverManager.getConnection("jdbc:oracle:thin:ora1/ora1@localhost:1521:orcl");
+			con = DriverManager.getConnection("jdbc:oracle:thin:" + user + "/" + pw + "@localhost:1521:orcl");
 			stmt = con.createStatement();
 			numRecords = stmt.executeUpdate(sql);
 			
@@ -72,7 +72,7 @@ public class DBUtility {
 		return 0;	
 	}
 	
-	public static int deleteRecord(String sql){
+	public static int delete(String sql, String user, String pw){
 		
 		Connection con = null;
 		Statement stmt = null;
@@ -81,7 +81,7 @@ public class DBUtility {
 		try{
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			//con = DriverManager.getConnection("jdbc:oracle:thin:sys as sysdba/oracle@localhost:1521:orcl");
-			con = DriverManager.getConnection("jdbc:oracle:thin:ora1/ora1@localhost:1521:orcl");
+			con = DriverManager.getConnection("jdbc:oracle:thin:" + user + "/" + pw + "@localhost:1521:orcl");
 			stmt = con.createStatement();
 			numRecords = stmt.executeUpdate(sql);
 			
@@ -104,28 +104,28 @@ public class DBUtility {
 	}
 	
 
-	public static ArrayList<HashMap<String,String>> selectRecord(String sql){
+	public static ArrayList<LinkedHashMap<String,String>> select(String sql,String user, String pw){
 
 		Connection con = null;
 		Statement stmt = null;
 		ResultSet rs = null;
 		ResultSetMetaData rsmd = null;
-		ArrayList<HashMap<String,String>> list = new ArrayList<HashMap<String,String>>();
+		ArrayList<LinkedHashMap<String,String>> list = new ArrayList<LinkedHashMap<String,String>>();
 		int numberOfColumns;
 		
-		HashMap<String,String> records = new HashMap<String,String>();
+		LinkedHashMap<String,String> records;
 		
 		try{
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			//con = DriverManager.getConnection("jdbc:oracle:thin:sys as sysdba/oracle@localhost:1521:orcl");
-			con = DriverManager.getConnection("jdbc:oracle:thin:ora1/ora1@localhost:1521:orcl");
+			con = DriverManager.getConnection("jdbc:oracle:thin:" + user + "/" + pw + "@localhost:1521:orcl");
 			stmt = con.createStatement();
 			rs = stmt.executeQuery(sql);
 			rsmd = rs.getMetaData();
 			numberOfColumns = rsmd.getColumnCount();
 			
 			while(rs.next()){
-				records = new HashMap<String,String>();
+				records = new LinkedHashMap<String,String>();
 				for (int i = 1; i < numberOfColumns; i++){
 					records.put(rsmd.getColumnName(i), rs.getString(i));
 				}
@@ -148,17 +148,4 @@ public class DBUtility {
 
 		return list;
 	}
-	
-	public static void main(String[]args){
-		
-		ArrayList<HashMap<String,String>> myList;
-		
-		myList = DBUtility.selectRecord("select * from MCStudents");
-		
-		System.out.println(myList.get(5).get("STUDENTid"));
-		
-		//int x = DBUtility.insertRecord("insert into cities(city) values ('landingville')");
-		//System.out.println(x);
-	}
-
 }
